@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 
 public class AgendaContactos {
+    String nombre;
+    int option;
 
     private List<Contact> contactos = new ArrayList<>(); //inicialización directa de la lista
 
@@ -55,55 +57,61 @@ public class AgendaContactos {
 
     public void EditarContacto(Scanner scanner){
 
-       // Pedir criterio de búsqueda (nombre, teléfono, etc.)
-        //Llamar a BuscarContacto
-        //Si contacto encontrado:
-        //Pedir nuevos datos
-        //Llamar a EditarContacto
-
+        scanner.nextLine();
         // Pedir al usuario que seleccione el contacto a editar mediante su nombre.
-        System.out.println("Para editar el contacto puede buscarlo por: ");
-        System.out.println("1. Nombre ");
-        System.out.println("2. Apellido ");
-        System.out.println("3. Telefono ");
-        System.out.println("4. Email ");
+        System.out.println("Selecciona el nombre del contacto a editar: ");
+        nombre = scanner.nextLine();
 
-        int option;
+        // Buscar el contacto por el nombre
+        Contact ContactToEdit = findContactByName(nombre);
 
-        option = scanner.nextInt();
+        if (ContactToEdit != null) {
+            // Si la nota fue encontrada, pedir al usuario que modifique los campos
+            System.out.println("Contacto encontrado. ¿Qué te gustaría cambiar?");
+            System.out.println("1. Nombre");
+            System.out.println("2. Apellido");
+            System.out.println("3. Dirección");
+            System.out.println("4. Teléfono");
+            System.out.println("5. Email");
 
-        switch (option){
-            case 1:
-                System.out.println("Vamos a buscar los contactos coincidentes por nombre");
+            option = scanner.nextInt();
 
-                System.out.println();
+            switch (option){
+                case 1:
+                    System.out.println("Introduce el nuevo nombre: ");
+                    scanner.nextLine();
+                    ContactToEdit.setNombre(scanner.nextLine());
+                    System.out.println("Nombre modificado correctamente.");
+                    break;
+                case 2:
+                    System.out.println("Introduce el nuevo apellido: ");
+                    scanner.nextLine();
+                    ContactToEdit.setApellido(scanner.nextLine());
+                    System.out.println("Apellido modificado correctamente.");
+                    break;
+                case 3:
+                    System.out.println("Introduce la nueva dirección: ");
+                    scanner.nextLine();
+                    ContactToEdit.setDireccion(scanner.nextLine());
+                    System.out.println("Dirección modificada correctamente.");
+                    break;
+                case 4:
+                    System.out.println("Introduce el nuevo teléfono: ");
+                    scanner.nextLine();
+                    ContactToEdit.setTelefono(scanner.nextInt());
+                    System.out.println("Teléfono modificado correctamente.");
+                    break;
+                case 5:
+                    scanner.nextLine();
+                    System.out.println("Introduce el nuevo email: ");
+                    ContactToEdit.setEmail(scanner.nextLine());
+                    System.out.println("Email modificado correctamente.");
+                    break;
 
-                System.out.println("Introduzca el nombre que quiere buscar: ");
-                scanner.nextLine();
-                String nombre = scanner.nextLine();
 
-                // Buscar el contacto por el nombre
-                Contact ContactToEdit = findContactByName(nombre);
 
-                if (ContactToEdit != null) {
-                    // Si la nota fue encontrada, pedir al usuario que modifique los campos
-                    System.out.println("Contacto encontrado. ¿Qué te gustaría cambiar?");
-                    System.out.println("1. Nombre");
-                    System.out.println("2. Apellido");
-                    System.out.println("3. Dirección");
-                    System.out.println("4. Teléfono");
-                    System.out.println("4. Email");
 
-                    option = scanner.nextInt();
-
-                    switch (option){
-                        case 1:
-                            System.out.println("Introduce el nuevo nombre: ");
-                            scanner.nextLine();
-                            ContactToEdit.setNombre(scanner.nextLine());
-                            System.out.println("Contacto modificado correctamente.");
-                            break;
-                    }
+            }
 
 
 
@@ -111,15 +119,61 @@ public class AgendaContactos {
                 }
 
 
+        }
+    public void EliminarContacto(Scanner scanner){
+
+        scanner.nextLine();
+        System.out.println("Introduce el contacto a eliminar: ");
+        nombre = scanner.nextLine();
+
+        Contact ContactToDelete = findContactByName(nombre);
+
+        if(ContactToDelete != null){
+            contactos.remove(ContactToDelete);
+            System.out.println("Contacto eliminado correctamente.");
+        }else{
+            System.out.println("La lista de contactos está vacía.");
+        }
+
+    }
+
+    public void ViewContacts(Scanner scanner){
 
 
+        System.out.println("Introduce el nombre del contacto que quieres buscar: ");
+        scanner.nextLine();
+        nombre = scanner.nextLine();
+
+        Contact ContactToView = findContactByName(nombre);
+
+        if(ContactToView != null){
+            System.out.println("Nombre: "+ContactToView.getNombre());
+            System.out.println("Apellido: "+ContactToView.getApellido());
+            System.out.println("Dirección: "+ContactToView.getDireccion());
+            System.out.println("Teléfono: "+ContactToView.getTelefono());
+            System.out.println("Email: "+ContactToView.getEmail());
+        }else{
+            System.out.println("La lista de contactos está vacía.");
         }
 
 
 
 
+    }
 
+    public void ViewAllContacts(Scanner scanner){
+        if(contactos != null && !contactos.isEmpty()){
+            for(Contact contacto : contactos){
+                System.out.println("Nombre: "+contacto.getNombre());
+                System.out.println("Apellido: "+contacto.getApellido());
+                System.out.println("Dirección: "+contacto.getDireccion());
+                System.out.println("Teléfono: "+contacto.getTelefono());
+                System.out.println("Email: "+contacto.getEmail());
+            }
 
+        }else{
+            System.out.println("No hay contactos disponibles");
+        }
 
 
 
@@ -129,13 +183,5 @@ public class AgendaContactos {
 
 
 
+    }
 
-
-
-
-
-
-
-
-
-}

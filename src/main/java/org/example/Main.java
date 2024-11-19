@@ -31,15 +31,15 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("3. Has seleccionado eliminar contactos");
-                    //NoteManager.deleteNote(scanner);
+                    agenda.EliminarContacto(scanner);
                     break;
                 case 4:
                     System.out.println("4. Has seleccionado buscar contactos");
-                    //NoteManager.viewNotes(scanner);
+                    agenda.ViewContacts(scanner);
                     break;
                 case 5:
                     System.out.println("5. Has seleccionado mostrar todos los contactos\"");
-                    //NoteManager.viewNotesByCategory(scanner);
+                    agenda.ViewAllContacts(scanner);
                     break;
                 case 6:
                     System.out.println("Saliendo del programa");
