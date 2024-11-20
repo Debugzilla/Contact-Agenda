@@ -3,12 +3,12 @@ package org.example;
 public class Contact {
     private String nombre;
     private String apellido;
-    private int telefono;
+    private String telefono;
     private String email;
     private String direccion;
 
     //definimos el constructor para inicializar los valores
-    public Contact(String nombre,String apellido, int telefono, String email, String direccion){
+    public Contact(String nombre,String apellido, String telefono, String email, String direccion){
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
@@ -16,6 +16,7 @@ public class Contact {
         this.direccion = direccion;
 
     }
+
 
     public String getNombre() {
         return nombre != null ? nombre : "nombre vacío"; //valor por defecto si es null
@@ -33,11 +34,11 @@ public class Contact {
         this.apellido = apellido;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 

@@ -1,18 +1,17 @@
 package org.example;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
 
 public class AgendaContactos {
-    String nombre;
-    int option;
+    private List<Contact> contactos = new ArrayList<>();
 
-    private List<Contact> contactos = new ArrayList<>(); //inicialización directa de la lista
-
-    public AgendaContactos(){
+    public AgendaContactos() {
         contactos = new ArrayList<>();
-        //contactos = new ArrayList<>(); //creamos la lista de contactos vacia
     }
 
     // Método para buscar un contacto por nombre
@@ -25,163 +24,177 @@ public class AgendaContactos {
         return null; // Retorna null si no encuentra el contacto
     }
 
+    // Método para añadir un contacto (interfaz gráfica)
+    public void AñadirContacto(JFrame ventana, JTextArea textArea) {
+        // Crear un panel de entrada con campos de texto
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(6, 2, 10, 10));
+
+        JLabel lblNombre = new JLabel("Nombre:");
+        JTextField txtNombre = new JTextField(20);
+        JLabel lblApellido = new JLabel("Apellido:");
+        JTextField txtApellido = new JTextField(20);
+        JLabel lblTelefono = new JLabel("Teléfono:");
+        JTextField txtTelefono = new JTextField(20);
+        JLabel lblEmail = new JLabel("Email:");
+        JTextField txtEmail = new JTextField(20);
+        JLabel lblDireccion = new JLabel("Dirección:");
+        JTextField txtDireccion = new JTextField(20);
 
 
 
-    public void AñadirContacto(Scanner scanner){
-
-        System.out.println("Ingrese el nombre:");
-        scanner.nextLine();
-        String nombre = scanner.nextLine();
-
-        System.out.println("Ingrese el apellido:");
-        String apellido = scanner.nextLine();
-
-        System.out.println("Ingrese el telefono:");
-        int telefono = scanner.nextInt();
-
-        System.out.println("Ingrese el email:");
-        String email = scanner.nextLine();
-        scanner.nextLine();
-
-        System.out.println("Ingrese la dirección: ");
-        String direccion = scanner.nextLine();
-
-        // Crear una nueva instancia de Note:
-        Contact newContact = new Contact(nombre, apellido, telefono, email, direccion);
-        //Añadir el contacto a lista_de_contactos
-        contactos.add(newContact);
-
-        System.out.println("Contacto agregado correctamente.");
-    }
-
-    public void EditarContacto(Scanner scanner){
-
-        scanner.nextLine();
-        // Pedir al usuario que seleccione el contacto a editar mediante su nombre.
-        System.out.println("Selecciona el nombre del contacto a editar: ");
-        nombre = scanner.nextLine();
-
-        // Buscar el contacto por el nombre
-        Contact ContactToEdit = findContactByName(nombre);
-
-        if (ContactToEdit != null) {
-            // Si la nota fue encontrada, pedir al usuario que modifique los campos
-            System.out.println("Contacto encontrado. ¿Qué te gustaría cambiar?");
-            System.out.println("1. Nombre");
-            System.out.println("2. Apellido");
-            System.out.println("3. Dirección");
-            System.out.println("4. Teléfono");
-            System.out.println("5. Email");
-
-            option = scanner.nextInt();
-
-            switch (option){
-                case 1:
-                    System.out.println("Introduce el nuevo nombre: ");
-                    scanner.nextLine();
-                    ContactToEdit.setNombre(scanner.nextLine());
-                    System.out.println("Nombre modificado correctamente.");
-                    break;
-                case 2:
-                    System.out.println("Introduce el nuevo apellido: ");
-                    scanner.nextLine();
-                    ContactToEdit.setApellido(scanner.nextLine());
-                    System.out.println("Apellido modificado correctamente.");
-                    break;
-                case 3:
-                    System.out.println("Introduce la nueva dirección: ");
-                    scanner.nextLine();
-                    ContactToEdit.setDireccion(scanner.nextLine());
-                    System.out.println("Dirección modificada correctamente.");
-                    break;
-                case 4:
-                    System.out.println("Introduce el nuevo teléfono: ");
-                    scanner.nextLine();
-                    ContactToEdit.setTelefono(scanner.nextInt());
-                    System.out.println("Teléfono modificado correctamente.");
-                    break;
-                case 5:
-                    scanner.nextLine();
-                    System.out.println("Introduce el nuevo email: ");
-                    ContactToEdit.setEmail(scanner.nextLine());
-                    System.out.println("Email modificado correctamente.");
-                    break;
+        // Añadir los componentes al panel
+        panel.add(lblNombre);
+        panel.add(txtNombre);
+        panel.add(lblApellido);
+        panel.add(txtApellido);
+        panel.add(lblTelefono);
+        panel.add(txtTelefono);
+        panel.add(lblEmail);
+        panel.add(txtEmail);
+        panel.add(lblDireccion);
+        panel.add(txtDireccion);
+        panel.add(new JLabel()); // Espacio vacío
 
 
+// Mostrar el formulario en un cuadro de diálogo modal
+        int result = JOptionPane.showConfirmDialog(
+                ventana,
+                panel,
+                "Añadir Contacto",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
 
+        // Acciones si el usuario selecciona "OK"
+        if (result == JOptionPane.OK_OPTION) {
+            String nombre = txtNombre.getText();
+            String apellido = txtApellido.getText();
+            String telefonoStr = txtTelefono.getText();
+            String email = txtEmail.getText();
+            String direccion = txtDireccion.getText();
 
+            // Validar que los campos no estén vacíos
+            if (nombre.isEmpty() || apellido.isEmpty() || telefonoStr.isEmpty() || email.isEmpty() || direccion.isEmpty()) {
+                JOptionPane.showMessageDialog(ventana, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-
-
-
-                }
-
-
-        }
-    public void EliminarContacto(Scanner scanner){
-
-        scanner.nextLine();
-        System.out.println("Introduce el contacto a eliminar: ");
-        nombre = scanner.nextLine();
-
-        Contact ContactToDelete = findContactByName(nombre);
-
-        if(ContactToDelete != null){
-            contactos.remove(ContactToDelete);
-            System.out.println("Contacto eliminado correctamente.");
-        }else{
-            System.out.println("La lista de contactos está vacía.");
-        }
-
-    }
-
-    public void ViewContacts(Scanner scanner){
-
-
-        System.out.println("Introduce el nombre del contacto que quieres buscar: ");
-        scanner.nextLine();
-        nombre = scanner.nextLine();
-
-        Contact ContactToView = findContactByName(nombre);
-
-        if(ContactToView != null){
-            System.out.println("Nombre: "+ContactToView.getNombre());
-            System.out.println("Apellido: "+ContactToView.getApellido());
-            System.out.println("Dirección: "+ContactToView.getDireccion());
-            System.out.println("Teléfono: "+ContactToView.getTelefono());
-            System.out.println("Email: "+ContactToView.getEmail());
-        }else{
-            System.out.println("La lista de contactos está vacía.");
-        }
-
-
-
-
-    }
-
-    public void ViewAllContacts(Scanner scanner){
-        if(contactos != null && !contactos.isEmpty()){
-            for(Contact contacto : contactos){
-                System.out.println("Nombre: "+contacto.getNombre());
-                System.out.println("Apellido: "+contacto.getApellido());
-                System.out.println("Dirección: "+contacto.getDireccion());
-                System.out.println("Teléfono: "+contacto.getTelefono());
-                System.out.println("Email: "+contacto.getEmail());
+            // Intentar convertir el teléfono a número entero
+            String telefono;
+            try {
+                telefono = telefonoStr; // Convertir teléfono a entero
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(ventana, "Por favor, ingrese un número válido para el teléfono.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-        }else{
-            System.out.println("No hay contactos disponibles");
+            // Crear una nueva instancia de Contact
+            Contact newContact = new Contact(nombre, apellido, telefono, email, direccion);
+
+            // Añadir el nuevo contacto a la lista de contactos
+            contactos.add(newContact);
+
+            // Mostrar mensaje de confirmación
+            JOptionPane.showMessageDialog(ventana, "Contacto agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Actualizar el JTextArea
+            textArea.append(
+                    String.format("Nombre: %s, Apellido: %s, Teléfono: %d, Email: %s, Dirección: %s%n",
+                            nombre, apellido, telefono, email, direccion)
+            );
+        }
+    }
+
+    public void EditarContcto(JFrame ventana, JTextArea textArea){
+
+        if (contactos.isEmpty()) {
+            JOptionPane.showMessageDialog(ventana, "No hay contactos para editar", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
+        // Crear JComboBox o JList con los contactos
+        String[] nombresContactos = new String[contactos.size()];
+        for (int i = 0; i < contactos.size(); i++) {
+            nombresContactos[i] = contactos.get(i).getNombre() + " " + contactos.get(i).getApellido();
+        }
+
+        JComboBox<String> comboBox = new JComboBox<>(nombresContactos);
+        int opcion = JOptionPane.showConfirmDialog(ventana, comboBox, "Selecciona un contacto", JOptionPane.OK_CANCEL_OPTION);
+
+        if (opcion == JOptionPane.CANCEL_OPTION) {
+            return;  // Si se cancela, salir
+        }
+
+        // Paso 2: Obtener el contacto seleccionado
+        int indiceSeleccionado = comboBox.getSelectedIndex();
+        Contact contactoSeleccionado = contactos.get(indiceSeleccionado);
+
+        // Paso 3: Mostrar formulario con los datos actuales del contacto
+        JTextField txtNombre = new JTextField(contactoSeleccionado.getNombre());
+        JTextField txtApellido = new JTextField(contactoSeleccionado.getApellido());
+        JTextField txtTelefono = new JTextField(contactoSeleccionado.getTelefono());
+        JTextField txtEmail = new JTextField(contactoSeleccionado.getEmail());
+        JTextField txtDireccion = new JTextField(contactoSeleccionado.getDireccion());
+
+        JPanel panelFormulario = new JPanel(new GridLayout(5, 2));
+        panelFormulario.add(new JLabel("Nombre:"));
+        panelFormulario.add(txtNombre);
+        panelFormulario.add(new JLabel("Apellido:"));
+        panelFormulario.add(txtApellido);
+        panelFormulario.add(new JLabel("Teléfono:"));
+        panelFormulario.add(txtTelefono);
+        panelFormulario.add(new JLabel("Email:"));
+        panelFormulario.add(txtEmail);
+        panelFormulario.add(new JLabel("Dirección:"));
+        panelFormulario.add(txtDireccion);
+
+        int opcionEdicion = JOptionPane.showConfirmDialog(ventana, panelFormulario, "Editar Contacto", JOptionPane.OK_CANCEL_OPTION);
+
+        if (opcionEdicion == JOptionPane.CANCEL_OPTION) {
+            return;  // Si se cancela, salir
+        }
+
+        // Paso 4: Validar los campos
+        if (txtNombre.getText().trim().isEmpty() || txtApellido.getText().trim().isEmpty() ||
+                txtTelefono.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty() || txtDireccion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(ventana, "Todos los campos deben estar completos.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!txtTelefono.getText().matches("\\d+")) {
+            JOptionPane.showMessageDialog(ventana, "El teléfono debe ser un número válido.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Paso 5: Actualizar el contacto en la lista
+        contactoSeleccionado.setNombre(txtNombre.getText());
+        contactoSeleccionado.setApellido(txtApellido.getText());
+        contactoSeleccionado.setTelefono(txtTelefono.getText());
+        contactoSeleccionado.setEmail(txtEmail.getText());
+        contactoSeleccionado.setDireccion(txtDireccion.getText());
+
+        // Paso 6: Actualizar JTextArea con los nuevos datos
+        StringBuilder sb = new StringBuilder();
+        for (Contact contacto : contactos) {
+            sb.append(contacto.toString()).append("\n");
+        }
+        textArea.setText(sb.toString());
+
+        // Paso 7: Mostrar mensaje de éxito
+        JOptionPane.showMessageDialog(ventana, "Contacto actualizado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
+
+
+    // Paso 1: Mostrar lista de contactos para seleccionar uno a editar
+       // Crear un panel con lista desplegable (JComboBox o JList) para seleccionar un contacto
+       // Si no hay contactos, mostrar mensaje de error y salir
+
+
 
 
 
 
     }
-
-
-
-    }
-

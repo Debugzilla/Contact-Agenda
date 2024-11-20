@@ -1,69 +1,93 @@
 package org.example;
-import java.util.Scanner;
 
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int opcion;
+        // Crear la ventana principal
+        JFrame ventana = new JFrame("Agenda de contactos");
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.setSize(600, 300);
 
-        //instancia de agenda de contactos
+        // Crear diseño simple
+        ventana.setLayout(new BorderLayout()); // Usar BorderLayout para una distribución más común
+
+        // Instancia de la agenda de contactos
         AgendaContactos agenda = new AgendaContactos();
 
+        // Crear panel principal
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new GridLayout(6, 1, 10, 10)); // 6 botones con espaciado
 
-        do {
-            DisplayMenu();
-            System.out.println();
-            System.out.print("Selecciona una de las opciones posibles: ");
+        // Crear botones para las opciones
+        JButton btnAñadir = new JButton("Añadir Contacto");
+        JButton btnEditar = new JButton("Editar Contacto");
+        JButton btnEliminar = new JButton("Eliminar Contacto");
+        JButton btnBuscar = new JButton("Buscar Contacto");
+        JButton btnMostrarTodos = new JButton("Mostrar Todos");
+        JButton btnSalir = new JButton("Salir");
 
-            opcion = scanner.nextInt();
-            System.out.println();
+        // Agregar botones al panel
+        panelPrincipal.add(btnAñadir);
+        panelPrincipal.add(btnEditar);
+        panelPrincipal.add(btnEliminar);
+        panelPrincipal.add(btnBuscar);
+        panelPrincipal.add(btnMostrarTodos);
+        panelPrincipal.add(btnSalir);
 
-            switch (opcion) {
-                case 1:
+        // Agregar panel a la ventana
+        ventana.add(panelPrincipal, BorderLayout.CENTER);
 
-                    System.out.println("Has seleccionado añadir contactos");
-                    agenda.AñadirContacto(scanner);
-                    break;
-                case 2:
-                    System.out.println("2. Has seleccionado editar contactos");
-                    agenda.EditarContacto(scanner);
-                    break;
-                case 3:
-                    System.out.println("3. Has seleccionado eliminar contactos");
-                    agenda.EliminarContacto(scanner);
-                    break;
-                case 4:
-                    System.out.println("4. Has seleccionado buscar contactos");
-                    agenda.ViewContacts(scanner);
-                    break;
-                case 5:
-                    System.out.println("5. Has seleccionado mostrar todos los contactos\"");
-                    agenda.ViewAllContacts(scanner);
-                    break;
-                case 6:
-                    System.out.println("Saliendo del programa");
-                    //NoteManager.saveToDatabase(scanner);
-                    break;
-                default:
-                    System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+        // Crear área de texto para mostrar resultados
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        ventana.add(scrollPane, BorderLayout.SOUTH);
 
+        // Acciones para los botones
+        btnAñadir.addActionListener(e -> {
+
+            agenda.AñadirContacto(ventana, textArea);
+
+
+        });
+
+        btnEditar.addActionListener(e -> {
+            agenda.EditarContcto(ventana, textArea);
+
+        });
+
+        btnEliminar.addActionListener(e -> {
+            String nombre = JOptionPane.showInputDialog(ventana, "Introduce el nombre del contacto a eliminar:");
+            if (nombre != null) {
+                // Lógica para eliminar contacto
+                textArea.append("Contacto eliminado: " + nombre + "\n");
             }
+        });
 
-        } while (opcion != 6);
+        btnBuscar.addActionListener(e -> {
+            String nombre = JOptionPane.showInputDialog(ventana, "Introduce el nombre del contacto a buscar:");
+            if (nombre != null) {
+                // Lógica para buscar contacto
+                textArea.append("Resultado de búsqueda para: " + nombre + "\n");
+            }
+        });
 
-    }
+        btnMostrarTodos.addActionListener(e -> {
+            // Lógica para mostrar todos los contactos
+            textArea.append("Mostrando todos los contactos...\n");
+        });
 
+        btnSalir.addActionListener(e -> {
+            JOptionPane.showMessageDialog(ventana, "Saliendo del programa. ¡Adiós!");
+            System.exit(0);
+        });
 
-    public static void DisplayMenu() {
-        System.out.println();
-        System.out.println("Menú de opciones del gestor de contactos:");
-        System.out.println("1. Añadir contacto");
-        System.out.println("2. Editar contacto");
-        System.out.println("3. Eliminar contacto");
-        System.out.println("4. Buscar contacto");
-        System.out.println("5. Mostrar todos los contactos");
-        System.out.println("6. Salir");
-
+        // Hacer visible la ventana
+        ventana.setVisible(true);
     }
 }
