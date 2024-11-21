@@ -106,7 +106,7 @@ public class AgendaContactos {
         }
     }
 
-    public void EditarContcto(JFrame ventana, JTextArea textArea){
+    public void EditarContacto(JFrame ventana, JTextArea textArea){
 
         if (contactos.isEmpty()) {
             JOptionPane.showMessageDialog(ventana, "No hay contactos para editar", "Error", JOptionPane.ERROR_MESSAGE);
@@ -184,6 +184,50 @@ public class AgendaContactos {
         // Paso 7: Mostrar mensaje de éxito
         JOptionPane.showMessageDialog(ventana, "Contacto actualizado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
+    public void EliminarContacto(JFrame ventana, JTextArea textArea){
+
+        if (contactos.isEmpty()) {
+            JOptionPane.showMessageDialog(ventana, "No hay contactos para eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear JComboBox o JList con los contactos
+        String[] nombresContactos = new String[contactos.size()];
+        for (int i = 0; i < contactos.size(); i++) {
+            nombresContactos[i] = contactos.get(i).getNombre() + " " + contactos.get(i).getApellido();
+        }
+
+        JComboBox<String> comboBox = new JComboBox<>(nombresContactos);
+        int opcion = JOptionPane.showConfirmDialog(ventana, comboBox, "Selecciona un contacto", JOptionPane.OK_CANCEL_OPTION);
+
+        if (opcion == JOptionPane.CANCEL_OPTION) {
+            return;  // Si se cancela, salir
+        }
+
+        // Obtener el índice del contacto seleccionado
+        int indiceSeleccionado = comboBox.getSelectedIndex();
+
+        if (indiceSeleccionado >= 0) {
+            // Eliminar el contacto de la lista
+            contactos.remove(indiceSeleccionado);
+
+            // Actualizar JTextArea con los datos restantes
+            StringBuilder sb = new StringBuilder();
+            for (Contact contacto : contactos) {
+                sb.append(contacto.toString()).append("\n");
+            }
+            textArea.setText(sb.toString());
+
+            JOptionPane.showMessageDialog(ventana, "Contacto eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(ventana, "No se seleccionó un contacto válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+
+
+    }
 
 
 
@@ -197,4 +241,4 @@ public class AgendaContactos {
 
 
 
-    }
+

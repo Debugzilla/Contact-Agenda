@@ -57,16 +57,12 @@ public class Main {
         });
 
         btnEditar.addActionListener(e -> {
-            agenda.EditarContcto(ventana, textArea);
+            agenda.EditarContacto(ventana, textArea);
 
         });
 
         btnEliminar.addActionListener(e -> {
-            String nombre = JOptionPane.showInputDialog(ventana, "Introduce el nombre del contacto a eliminar:");
-            if (nombre != null) {
-                // Lógica para eliminar contacto
-                textArea.append("Contacto eliminado: " + nombre + "\n");
-            }
+            agenda.EliminarContacto(ventana, textArea);
         });
 
         btnBuscar.addActionListener(e -> {
