@@ -66,16 +66,12 @@ public class Main {
         });
 
         btnBuscar.addActionListener(e -> {
-            String nombre = JOptionPane.showInputDialog(ventana, "Introduce el nombre del contacto a buscar:");
-            if (nombre != null) {
-                // Lógica para buscar contacto
-                textArea.append("Resultado de búsqueda para: " + nombre + "\n");
-            }
+           agenda.BuscarContacto(ventana, textArea);
         });
 
         btnMostrarTodos.addActionListener(e -> {
-            // Lógica para mostrar todos los contactos
-            textArea.append("Mostrando todos los contactos...\n");
+            agenda.MostrarTodos(ventana, textArea);
+
         });
 
         btnSalir.addActionListener(e -> {

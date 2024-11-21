@@ -224,10 +224,79 @@ public class AgendaContactos {
         }
     }
 
+    public void BuscarContacto(JFrame ventana, JTextArea textArea) {
+
+        if (contactos.isEmpty()) {
+            JOptionPane.showMessageDialog(ventana, "No hay contactos para buscar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear un JComboBox con los nombres de los contactos
+        String[] nombresContactos = new String[contactos.size()];
+        for (int i = 0; i < contactos.size(); i++) {
+            nombresContactos[i] = contactos.get(i).getNombre() + " " + contactos.get(i).getApellido();
+        }
+
+        JComboBox<String> comboBox = new JComboBox<>(nombresContactos);
+        int opcion = JOptionPane.showConfirmDialog(ventana, comboBox, "Selecciona un contacto", JOptionPane.OK_CANCEL_OPTION);
+
+        if (opcion == JOptionPane.CANCEL_OPTION || opcion == JOptionPane.CLOSED_OPTION) {
+            return; // Si se cancela o cierra el diálogo, salir
+        }
+
+        // Obtener el índice del contacto seleccionado
+        int indiceSeleccionado = comboBox.getSelectedIndex();
+
+        if (indiceSeleccionado >= 0) {
+            // Obtener el contacto correspondiente
+            Contact contactoSeleccionado = contactos.get(indiceSeleccionado);
+
+            // Mostrar la información del contacto en el JTextArea
+            String informacionContacto = "Información del Contacto:\n" +
+                    "Nombre: " + contactoSeleccionado.getNombre() + "\n" +
+                    "Apellido: " + contactoSeleccionado.getApellido() + "\n" +
+                    "Teléfono: " + contactoSeleccionado.getTelefono() + "\n" +
+                    "Email: " + contactoSeleccionado.getEmail();
+            textArea.setText(informacionContacto);
+
+            JOptionPane.showMessageDialog(ventana, "Contacto encontrado:\n" + informacionContacto, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(ventana, "No se seleccionó un contacto válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void MostrarTodos(JFrame ventana, JTextArea textArea) {
+
+        if (contactos != null && !contactos.isEmpty()) {
+            // Construir el texto para mostrar todos los contactos
+            StringBuilder sb = new StringBuilder();
+            for (Contact contacto : contactos) {
+                sb.append("Nombre: ").append(contacto.getNombre()).append("\n")
+                        .append("Apellido: ").append(contacto.getApellido()).append("\n")
+                        .append("Dirección: ").append(contacto.getDireccion()).append("\n\n");
+            }
+
+            // Mostrar la información en un cuadro de diálogo
+            JOptionPane.showMessageDialog(ventana, sb.toString(), "Lista de Contactos", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Mostrar un mensaje en un cuadro de diálogo si no hay contactos
+            JOptionPane.showMessageDialog(ventana, "No hay contactos disponibles.", "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+
+
+
+
+
 
 
 
     }
+
+
+
+
 
 
 
